@@ -4,31 +4,30 @@ pipeline {
     stages {
         stage ('GetProject') {
             steps {
-                git 'https://github.com/takfarinassaber/CT5171_test1Maven.git'
+                // Cloning the Git repository
+                git 'https://github.com/damienb1983/CT5171_test1Maven.git'
             }
         }
-        stage ('build') {
+        stage ('Build') {
             steps {
-                sh 'mvn clean:clean'
-                sh 'mvn dependency:copy-dependencies'
-                sh 'mvn compiler:compile'
+                // Running Maven build
+                sh 'mvn clean compile dependency:copy-dependencies'
             }
         }
-//         stage ('Exec') {
-//             steps {
-//                 sh 'mvn exec:java'
-//             }
-//         }
-        stage ('Package') {
+        stage ('Exec') {
             steps {
-                sh 'mvn package'
+                // Executing the Java application using Maven
+                sh 'mvn exec:java'
             }
         }
     }
+
     post {
         success {
-            archiveArtifacts allowEmptyArchive: true,
-                artifacts: '**/ct5171_test1Maven*.jar'
+            echo 'Build completed successfully.'
+        }
+        failure {
+            echo 'Build failed!'
         }
     }
 }
